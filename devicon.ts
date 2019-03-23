@@ -2,13 +2,16 @@ const fs = require("fs");
 
 class DeviconScript {
   fileHeaderString: string;
+  projectLink: string;
   list: string[];
   svgList: string[];
-  constructor() {
+
+  constructor(projectLink) {
     this.fileHeaderString =
       'import React, { SFC } from "react"; import styled from "styled-components"; const SVG = styled.svg` height: 24; width: 24; fill: #424242; stroke: #424242;`;';
     this.list = [];
     this.svgList = [];
+    this.projectLink = projectLink;
     this.generate();
   }
   private generate() {
@@ -73,7 +76,7 @@ class DeviconScript {
   public writeHeader() {
     return new Promise((resolve, reject) => {
       fs.writeFile(
-        `../roadskill-react-ts/src/Icons/Icon_functions.tsx`,
+        `${this.projectLink}/src/Icons/Icon_functions.tsx`,
         this.fileHeaderString,
         (err, data) => {
           if (err) console.log(err);
@@ -91,7 +94,7 @@ class DeviconScript {
   }
   private writeSVG(fileName, file, resolve, folder) {
     fs.readFile(
-      `../devicon-master/icons/${folder}/${file}`,
+      `./devicon-master/icons/${folder}/${file}`,
       "utf8",
       (err, data) => {
         if (err) throw err;
@@ -106,7 +109,7 @@ class DeviconScript {
         !this.list.includes(name)
           ? this.list.push(name) &&
             fs.appendFile(
-              `../roadskill-react-ts/src/Icons/Icon_functions.tsx`,
+              `${this.projectLink}/src/Icons/Icon_functions.tsx`,
               dataToWrite,
               (err, data) => {
                 if (err) console.log(err);
@@ -119,4 +122,4 @@ class DeviconScript {
   }
 }
 
-new DeviconScript();
+new DeviconScript("../../roadskill-react-ts/");

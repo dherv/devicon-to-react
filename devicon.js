@@ -1,9 +1,9 @@
 const fs = require("fs");
 class DeviconScript {
-    constructor() {
+    constructor(projectLink) {
         this.writeList = () => {
             const iconFileHeader = `import {${this.list.join()}} from "./Icon_functions"; import {IIcon} from "../Interfaces"; export const Icon: IIcon = {${this.list.join()}};`;
-            fs.writeFile(`../roadskill-react-ts/src/Icons/Icon.tsx`, iconFileHeader, (err, data) => {
+            fs.writeFile(`${this.projectLink}/src/Icons/Icon.tsx`, iconFileHeader, (err, data) => {
                 if (err)
                     console.log(err);
             });
@@ -12,6 +12,7 @@ class DeviconScript {
             'import React, { SFC } from "react"; import styled from "styled-components"; const SVG = styled.svg` height: 24; width: 24; fill: #424242; stroke: #424242;`;';
         this.list = [];
         this.svgList = [];
+        this.projectLink = projectLink;
         this.generate();
     }
     generate() {
@@ -75,7 +76,7 @@ class DeviconScript {
         });
     }
     writeSVG(fileName, file, resolve, folder) {
-        fs.readFile(`../devicon-master/icons/${folder}/${file}`, "utf8", (err, data) => {
+        fs.readFile(`./devicon-master/icons/${folder}/${file}`, "utf8", (err, data) => {
             if (err)
                 throw err;
             const path = this.buildPath(data);
@@ -84,7 +85,7 @@ class DeviconScript {
             const dataToWrite = `export const ${name}: React.StatelessComponent<{}> = () => (${jsx})\n`;
             !this.list.includes(name)
                 ? this.list.push(name) &&
-                    fs.appendFile(`../roadskill-react-ts/src/Icons/Icon_functions.tsx`, dataToWrite, (err, data) => {
+                    fs.appendFile(`${this.projectLink}/src/Icons/Icon_functions.tsx`, dataToWrite, (err, data) => {
                         if (err)
                             console.log(err);
                         return this.list;
@@ -93,5 +94,5 @@ class DeviconScript {
         });
     }
 }
-new DeviconScript();
+new DeviconScript("../../roadskill-react-ts/");
 //# sourceMappingURL=devicon.js.map

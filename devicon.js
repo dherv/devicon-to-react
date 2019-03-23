@@ -54,11 +54,13 @@ class DeviconScript {
         const fill = path.match(/fill=".*?"/g);
         if (fill)
             path = path.replace(/fill=".*?"/g, "");
+        path = path.replace(/clip-rule/g, "clipRule");
+        path = path.replace(/fill-rule/g, "fillRule");
         return path;
     }
     writeHeader() {
         return new Promise((resolve, reject) => {
-            fs.writeFile(`../roadskill-react-ts/src/Icons/Icon_functions.tsx`, this.fileHeaderString, (err, data) => {
+            fs.writeFile(`${this.projectLink}/src/Icons/Icon_functions.tsx`, this.fileHeaderString, (err, data) => {
                 if (err)
                     console.log(err);
             });

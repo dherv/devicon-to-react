@@ -52,13 +52,17 @@ class DeviconScript {
 
     const fill = path.match(/fill=".*?"/g);
     if (fill) path = path.replace(/fill=".*?"/g, "");
+
+    path = path.replace(/clip-rule/g, "clipRule");
+    path = path.replace(/fill-rule/g, "fillRule");
+
     return path;
   }
 
   private writeList = () => {
     const iconFileHeader = `import {${this.list.join()}} from "./Icon_functions"; import {IIcon} from "../Interfaces"; export const Icon: IIcon = {${this.list.join()}};`;
     fs.writeFile(
-      `../roadskill-react-ts/src/Icons/Icon.tsx`,
+      `${this.projectLink}/src/Icons/Icon.tsx`,
       iconFileHeader,
       (err, data) => {
         if (err) console.log(err);
